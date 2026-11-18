@@ -43,7 +43,6 @@ const SECT = [
   ['Démarche', [['usagers',12],['type',5],['categorie',4],['paiement',3]]],
   ['Technique', [['heberg',3],['progiciel',3],['editeur',3],['appMetier',3]]]
 ];
-const VERSION = 'v3';
 const FM = Object.fromEntries(FIELDS.map(f => [f.k, f]));
 const COL = {}, OPT = {}, V = {}, E = {}, T = {}, O = {};
 let TID = '', DIRS = [], PC = null, DONE = null, BUSY = false;
@@ -96,7 +95,6 @@ async function init() {
         }
       }
     }
-    console.log('[formulaire ' + VERSION + ']', Object.fromEntries(FIELDS.map(f => [f.k, COL[f.k] ? COL[f.k].colId + ' (' + COL[f.k].type + ') -> ' + kind(f) : 'introuvable'])));
     resetForm();
   } catch (e) {
     $('#app').innerHTML = `<div class="bn"><b>Impossible de charger le formulaire.</b><br>${esc(e.message || e)}<br>Vérifiez que le widget est sur la table Demandes avec l’accès « Accès complet au document ».</div>`;
@@ -193,7 +191,7 @@ function render() {
     ${SECT.map(([t, fs]) => `<section class="sc"><h3>${t}</h3><div class="mg">${fs.map(([k, s]) => { const f = FM[k];
       return `<div class="fd" id="fd-${k}" style="--s:${s}"><label><span>${esc(f.l)}${f.req ? '<b>*</b>' : ''}</span>${f.max ? `<span class="ct" id="ct-${k}">0/${f.max}</span>` : ''}</label>
       <div id="c-${k}">${ctl(f)}</div>${f.add && COL[k] ? `<p class="hn">${esc(f.h || 'Choisissez dans la liste ou saisissez une nouvelle valeur.')}</p>` : ''}<p class="er" id="er-${k}"></p></div>`; }).join('')}</div></section>`).join('')}
-    <footer class="ft"><span class="mu" id="prog"></span><span id="msg" role="alert"></span><small class="mu">${VERSION}</small>
+    <footer class="ft"><span class="mu" id="prog"></span><span id="msg" role="alert"></span>
     <button type="button" class="gh" data-a="reset">Réinitialiser</button><button type="button" class="btn" id="go" data-a="submit">Envoyer la demande</button></footer>`;
   FIELDS.forEach(f => counter(f.k)); prog();
 }
