@@ -3,7 +3,7 @@
 const CFG = {
   title: 'Nouvelle demande de téléservice',
   subtitle: 'Les champs marqués d’un astérisque sont obligatoires. Votre demande sera vérifiée avant intégration au référentiel.',
-  table: '',      // vide = table de la section du widget (Demandes)
+  table: 'Demandes', // ID exact de la table cible (Données brutes). Verrouillé : le widget n'écrit jamais ailleurs
   dirParent: ''   // colonne « DG » de la table Directions ; vide = détection automatique
 };
 // a = noms de colonnes acceptés (sans accents ni espaces) ; add = ajout d'une nouvelle valeur autorisé
