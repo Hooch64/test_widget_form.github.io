@@ -13,7 +13,7 @@ const FIELDS = [
   {k:'url', l:'URL publique', a:['urlpublique','url'], url:1, ph:'https://…'},
   {k:'desc', l:'Description', a:['description'], req:1, max:150, area:1},
   {k:'statut', l:'Statut', a:['statut'], req:1},
-  {k:'collectivite', l:'Collectivité', a:['collectivite'], req:1},
+  {k:'collectivite', l:'Collectivité', a:['collectivite'], req:1, single:1}, // single : liste déroulante même si la colonne est un choix multiple
   {k:'thematique', l:'Thématique', a:['thematique'], req:1},
   {k:'instance', l:'Instance Publik', a:['instancepublik','instance'], req:1},
   {k:'dg', l:'DG propriétaire', a:['dgproprietaire'], req:1},
@@ -59,7 +59,7 @@ function kind(f) {
   const c = COL[f.k]; if (!c) return 'none';
   const t = c.type;
   if (t.startsWith('Ref:')) return 'ref';
-  if (t === 'ChoiceList') return f.add ? 'tags' : 'pills';
+  if (t === 'ChoiceList') return f.single ? 'select' : f.add ? 'tags' : 'pills';
   if (t === 'Choice') return f.add ? 'combo' : 'select';
   if (t === 'Date') return 'date';
   return f.area ? 'area' : 'text';
@@ -189,7 +189,7 @@ function render() {
   app.innerHTML = `<header><h1>${esc(CFG.title)}</h1><p class="mu">${esc(CFG.subtitle)}</p></header>
     ${miss.length ? `<div class="bn"><b>Colonnes introuvables dans « ${esc(TID)} »</b> : ${esc(miss.join(', '))}. Vérifiez leur nom dans la table.</div>` : ''}
     ${SECT.map(([t, fs]) => `<section class="sc"><h3>${t}</h3><div class="mg">${fs.map(([k, s]) => { const f = FM[k];
-      return `<div class="fd" id="fd-${k}" style="--s:${s}"><label>${esc(f.l)}${f.req ? '<b>*</b>' : ''}${f.max ? `<span class="ct" id="ct-${k}">0/${f.max}</span>` : ''}</label>
+      return `<div class="fd" id="fd-${k}" style="--s:${s}"><label><span>${esc(f.l)}${f.req ? '<b>*</b>' : ''}</span>${f.max ? `<span class="ct" id="ct-${k}">0/${f.max}</span>` : ''}</label>
       <div id="c-${k}">${ctl(f)}</div>${f.add && COL[k] ? `<p class="hn">${esc(f.h || 'Choisissez dans la liste ou saisissez une nouvelle valeur.')}</p>` : ''}<p class="er" id="er-${k}"></p></div>`; }).join('')}</div></section>`).join('')}
     <footer class="ft"><span class="mu" id="prog"></span><span id="msg" role="alert"></span>
     <button type="button" class="gh" data-a="reset">Réinitialiser</button><button type="button" class="btn" id="go" data-a="submit">Envoyer la demande</button></footer>`;
